@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hộp Quà 3D 🎁</title>
+
+  <!-- CSS gốc của hộp quà -->
+  <link rel="stylesheet" href="./style/style.css">
+
+  <!-- CSS HOME -->
+  <link rel="stylesheet" href="./style/home.css">
+</head>
+<body>
+
+  <!-- 🔊 NHẠC (CHỈ 1 LẦN) -->
+  <audio id="bgMusic" loop>
+    <source src="./assets/hbd.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ================= HOME OVERLAY ================= -->
+  <section id="home">
+    <canvas id="snow"></canvas>
+
+  <!-- GAME BONG BÓNG -->
+  <div id="balloon-game">
+    <p class="game-text">🎈 Đập hết bong bóng để mở quà 🎈</p>
+    <div id="balloons"></div>
+  </div>
+
+    <div class="container lights">
+      <h1 class="title">
+  <span class="icon">🎂</span>
+  <span class="text">HAPPY BIRTHDAY</span>
+  <span class="icon">🎂</span>
+</h1>
+      <p>
+        Chúc bạn sinh nhật vui vẻ,  
+        hạnh phúc và ngập tràn yêu thương,
+        và đây là món quà thay lời muốn nói của tôi ❄️✨
+      </p>
+      <button onclick="openGift()">🎁 Mở món quà 🎁</button>
+    </div>
+  </section>
+
+  <!-- ================= GIFT 3D ================= -->
+  <canvas class="webgl"></canvas>
+
+  <!-- SHADERS (GIỮ NGUYÊN) -->
+  <script type="x-shader/x-vertex" id="vertexshaderCandle">
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  </script>
+
+  <script type="x-shader/x-fragment" id="fragmentshaderCandle">
+    uniform float time; 
+    uniform float colorSpeed;
+    uniform float delay; 
+    uniform vec3 baseColor;
+    uniform vec3 finalColor;
+    varying vec2 vUv;
+
+    void main() {
+      float animatedTime = time - delay;
+      animatedTime = mod(animatedTime, colorSpeed);
+      float mixFactor = animatedTime / colorSpeed;
+      vec3 finalColor = mix(baseColor, finalColor, mixFactor);
+      gl_FragColor = vec4(finalColor, 1.0);
+    }
+  </script>
+
+  <!-- JS HOME -->
+  <script src="./style/home.js"></script>
+
+  <!-- JS HỘP QUÀ -->
+  <script type="module" src="./style/module.js"></script>
+
+</body>
+</html>
